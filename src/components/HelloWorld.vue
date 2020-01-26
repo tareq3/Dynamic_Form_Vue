@@ -1,41 +1,70 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div class="hello container">
+    <form >
+      <h1>Dynamic Apartment Form</h1>
+        <div class="row">
+            <div class="col-xs-2">
+                <button type="button" v-on:click="addNewApartment" class="btn btn-block btn-success">
+                    Add +
+                </button>
+            </div>
+            <div class="col-xs-10">
+                Would you like add more apartments?
+            </div>
+        </div>
+        <div v-for="(apartment,index) in apartments" :key="index">
+  
+           <div class="row">
+                <div class="col-xs-2">
+                    <label>&nbsp;</label>
+                    <button type="button" v-on:click="removeApartment(index)" class="btn btn-block btn-danger">
+                        Rem -
+                    </button>
+                </div>
+                <div class="form-group col-xs-5">
+                    <label>Price (HUF)</label>
+                    <input v-model="apartment.price" type="number"
+                           class="form-control" placeholder="Price">
+                </div>
+                <div class="form-group col-xs-5">
+                    <label>Rooms (PCS)</label>
+                    <input v-model="apartment.rooms" type="number"
+                          class="form-control" placeholder="Rooms">
+                </div>
+        </div>
+        </div>
+    </form>
+    {{apartments}}
   </div>
 </template>
 
 <script>
+import Vue from'vue';
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
+  data(){
+    return{
+      apartment: {
+      price: '',
+      rooms: ''
+    },
+    apartments: [{price:'1500', rooms:'4'}],
+    }
+  },
+   
+
+  methods:{
+      addNewApartment: function () {
+        console.log(this.apartment)
+    //    this.apartments.push({price:'', rooms:''})
+      this.apartments.push(Vue.util.extend({},this.apartment)) //this line uses the apartment model and craete a clone of that object
+    },
+    removeApartment: function (index) {
+     // this.apartments.splice(index, 1);
+      Vue.delete(this.apartments, index);
+    }
   }
+  
 }
 </script>
 
